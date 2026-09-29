@@ -22,7 +22,7 @@
 #elif defined __linux__ || defined __LITEOS__ || defined __APPLE__
 #include <ctime>
 #else
-    #include "cmsis_os2.h"
+#include "cmsis_os2.h"
 #endif
 
 namespace OHOS {
