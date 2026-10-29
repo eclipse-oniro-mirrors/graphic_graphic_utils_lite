@@ -12,6 +12,9 @@
   "component": {
     "name": "graphic_utils_lite",
     "subsystem": "graphic",
+      "syscap": [
+        "SystemCapability.Graphic.Graphic2D.NativeDrawing.Slim"
+      ],
     "features": [
       "graphic_utils_lite_enable_ohos_product_config",
       "graphic_utils_lite_enable_component_gradient_config",
