@@ -105,6 +105,7 @@ if (os_level != "standard") {
             "frameworks/trans_affine.cpp",
             "frameworks/transform.cpp",
             "frameworks/version.cpp",
+            "frameworks/canvas_api.cpp",
         ]
         if (defined(media_interface_upgrade)) {
             sources += [
