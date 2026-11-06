@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-#include "oh_canvas.h"
+#include "canvas_api.h"
 
 uint32_t OH_Canvas_CreateHandle(const char *componentId, const char *invokeCallbackName, bool offScreenRender)
 {
