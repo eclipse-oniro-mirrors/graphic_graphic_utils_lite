@@ -30,6 +30,11 @@
  * code inside the OHOS namespace reaches them through normal scope lookup
  * without qualification.
  *
+ * The whole contract sits inside the C-linkage guard (extern "C", same
+ * form as canvas_api.h): today's content is linkage-free (types and macros
+ * only), but any function declaration added to this contract later keeps
+ * C symbol names in both languages instead of getting C++ name mangling.
+ *
  * @since 26.1.0
  * @version 26.1.0
  */
@@ -39,6 +44,9 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 /**
  * @brief Frame format (what kind of data the frame contains).
  *
@@ -108,5 +116,9 @@ struct GraphicFrame {
     /** Data segments. */
     struct GraphicFrameChunk chunks[GRAPHIC_FRAME_MAX_CHUNK_NUM];
 };
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* GRAPHIC_FRAME_H */
