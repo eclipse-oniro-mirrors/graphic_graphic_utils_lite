@@ -24,6 +24,12 @@
  * C++ dependencies beyond stdint.h) so both C HAL adapters and C++ framework
  * code can include it directly.
  *
+ * All types are declared at global scope on purpose: C and C++ translations
+ * see exactly the same symbols (no namespace wrapper in either language),
+ * so a HAL prototype written once binds identically in both. C++ framework
+ * code inside the OHOS namespace reaches them through normal scope lookup
+ * without qualification.
+ *
  * @since 26.1.0
  * @version 26.1.0
  */
@@ -32,10 +38,6 @@
 #define GRAPHIC_FRAME_H
 
 #include <stdint.h>
-
-#ifdef __cplusplus
-namespace OHOS {
-#endif
 
 /**
  * @brief Frame format (what kind of data the frame contains).
@@ -106,9 +108,5 @@ struct GraphicFrame {
     /** Data segments. */
     struct GraphicFrameChunk chunks[GRAPHIC_FRAME_MAX_CHUNK_NUM];
 };
-
-#ifdef __cplusplus
-} // namespace OHOS
-#endif
 
 #endif /* GRAPHIC_FRAME_H */
