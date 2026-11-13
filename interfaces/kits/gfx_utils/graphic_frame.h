@@ -24,8 +24,8 @@
  * C++ dependencies beyond stdint.h) so both C HAL adapters and C++ framework
  * code can include it directly.
  *
- * @since 4.0
- * @version 1.0
+ * @since 26.1.0
+ * @version 26.1.0
  */
 
 #ifndef GRAPHIC_FRAME_H
@@ -43,6 +43,9 @@ namespace OHOS {
  * This is a closed domain: the buffer-level tag is validated against these
  * values. It is intentionally independent of the ImageFormat enum (which
  * drives memory allocation) to prevent mixing the two value spaces.
+ *
+ * @since 26.1.0
+ * @version 26.1.0
  */
 enum GraphicFrameFormat {
     GRAPHIC_FRAME_FORMAT_NONE = 0,
@@ -57,6 +60,9 @@ enum GraphicFrameFormat {
  *
  * The consumer infers the plane from the chunk index and the format
  * (e.g. NV12 chunk 0 = Y, chunk 1 = UV), so no explicit planeId is needed.
+ *
+ * @since 26.1.0
+ * @version 26.1.0
  */
 struct GraphicFrameChunk {
     /** Virtual address of the segment. */
@@ -69,12 +75,20 @@ struct GraphicFrameChunk {
     uint32_t stride;
 };
 
-/** Maximum number of data segments per frame. */
+/**
+ * @brief Maximum number of data segments per frame.
+ *
+ * @since 26.1.0
+ * @version 26.1.0
+ */
 #define GRAPHIC_FRAME_MAX_CHUNK_NUM 5
 
 /**
  * @brief Complete frame view: the producer sets everything in one call
  *        (SetFrame), the consumer gets everything in one call (GetFrame).
+ *
+ * @since 26.1.0
+ * @version 26.1.0
  */
 struct GraphicFrame {
     /** Frame format (GraphicFrameFormat value). */
