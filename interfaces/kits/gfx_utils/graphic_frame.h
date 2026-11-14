@@ -96,14 +96,14 @@ struct GraphicFrame {
     uint8_t chunkCount;
     /** Alignment padding, must be zero. */
     uint8_t reserved1[3];
-    /** Reserved for future extension, must be zero. */
-    uint32_t reserved2[4];
-    /** Data segments. */
-    struct GraphicFrameChunk chunks[GRAPHIC_FRAME_MAX_CHUNK_NUM];
     /** Driver context, passed back on release. */
     void* context;
     /** Driver buffer handle (pool index/id), passed back on release. */
     uint32_t drvHandle;
+    /** Reserved for future extension, must be zero. */
+    uint32_t reserved2[4];
+    /** Data segments. */
+    struct GraphicFrameChunk chunks[GRAPHIC_FRAME_MAX_CHUNK_NUM];
 };
 
 /**
