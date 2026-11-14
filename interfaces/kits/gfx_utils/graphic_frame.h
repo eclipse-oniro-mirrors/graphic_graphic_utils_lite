@@ -100,10 +100,10 @@ struct GraphicFrame {
     uint32_t reserved2[4];
     /** Data segments. */
     struct GraphicFrameChunk chunks[GRAPHIC_FRAME_MAX_CHUNK_NUM];
-    /** Driver buffer handle (pool index/id), passed back on release. */
-    uint32_t drvHandle;
     /** Driver context, passed back on release. */
     void* context;
+    /** Driver buffer handle (pool index/id), passed back on release. */
+    uint32_t drvHandle;
 };
 
 /**
