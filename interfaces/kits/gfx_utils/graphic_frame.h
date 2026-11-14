@@ -100,7 +100,23 @@ struct GraphicFrame {
     uint32_t reserved2[4];
     /** Data segments. */
     struct GraphicFrameChunk chunks[GRAPHIC_FRAME_MAX_CHUNK_NUM];
+    /** Driver buffer handle (pool index/id), passed back on release. */
+    uint32_t drvHandle;
+    /** Driver context, passed back on release. */
+    void* context;
 };
+
+/**
+ * @brief Releases the memory a frame describes.
+ *
+ * Each driver provides one function of this signature; it is invoked when the
+ * wrapper describing the frame is destroyed, with the frame (including
+ * drvHandle and context) passed back. It must be quick and non-blocking.
+ *
+ * @since 26.1.0
+ * @version 26.1.0
+ */
+typedef void (*GraphicFrameDataReleaseFunc)(const struct GraphicFrame* frame, void* context);
 
 #ifdef __cplusplus
 }
