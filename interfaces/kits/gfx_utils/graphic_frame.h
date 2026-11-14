@@ -17,23 +17,10 @@
  * @addtogroup GraphicFrame
  * @{
  *
- * @brief Shared frame types for HAL and framework.
+ * @brief Shared graphic frame types.
  *
- * This header is the interface contract between the camera/display HAL and
- * the graphics framework. It is C-compatible (pure structs and enums, no
- * C++ dependencies beyond stdint.h) so both C HAL adapters and C++ framework
- * code can include it directly.
- *
- * All types are declared at global scope on purpose: C and C++ translations
- * see exactly the same symbols (no namespace wrapper in either language),
- * so a HAL prototype written once binds identically in both. C++ framework
- * code inside the OHOS namespace reaches them through normal scope lookup
- * without qualification.
- *
- * The whole contract sits inside the C-linkage guard (extern "C", same
- * form as canvas_api.h): today's content is linkage-free (types and macros
- * only), but any function declaration added to this contract later keeps
- * C symbol names in both languages instead of getting C++ name mangling.
+ * Describes one frame built from one or more memory segments.
+ * C and C++ compatible.
  *
  * @since 26.1.0
  * @version 26.1.0
@@ -47,12 +34,12 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 /**
- * @brief Frame format (what kind of data the frame contains).
+ * @brief Frame format.
  *
- * This is a closed domain: the buffer-level tag is validated against these
- * values. It is intentionally independent of the ImageFormat enum (which
- * drives memory allocation) to prevent mixing the two value spaces.
+ * Closed value domain, independent of ImageFormat to avoid silent
+ * mixing of the two value spaces.
  *
  * @since 26.1.0
  * @version 26.1.0
@@ -66,10 +53,10 @@ enum GraphicFrameFormat {
 };
 
 /**
- * @brief One data segment of a frame.
+ * @brief One memory segment of a frame.
  *
- * The consumer infers the plane from the chunk index and the format
- * (e.g. NV12 chunk 0 = Y, chunk 1 = UV), so no explicit planeId is needed.
+ * The plane is inferred from the segment index and the format
+ * (e.g. NV12 segment 0 = Y, segment 1 = UV).
  *
  * @since 26.1.0
  * @version 26.1.0
@@ -86,7 +73,7 @@ struct GraphicFrameChunk {
 };
 
 /**
- * @brief Maximum number of data segments per frame.
+ * @brief Maximum number of segments per frame.
  *
  * @since 26.1.0
  * @version 26.1.0
@@ -94,8 +81,7 @@ struct GraphicFrameChunk {
 #define GRAPHIC_FRAME_MAX_CHUNK_NUM 5
 
 /**
- * @brief Complete frame view: the producer sets everything in one call
- *        (SetFrame), the consumer gets everything in one call (GetFrame).
+ * @brief Complete frame description: format, dimensions and segments.
  *
  * @since 26.1.0
  * @version 26.1.0
