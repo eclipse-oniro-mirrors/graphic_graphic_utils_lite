@@ -38,8 +38,7 @@ extern "C" {
 /**
  * @brief Frame format.
  *
- * Closed value domain, independent of ImageFormat to avoid silent
- * mixing of the two value spaces.
+ * Closed value domain: only the values listed here are valid.
  *
  * @since 26.1.0
  * @version 26.1.0
