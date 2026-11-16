@@ -100,6 +100,8 @@ enum : uint8_t {
     STYLE_TEXT_STROKR_COLOR,
     /** Text stroke width */
     STYLE_TEXT_STROKR_WIDTH,
+    /** Text gradient color */
+    STYLE_TEXT_GRADIENT_COLOR,
     /** Line color */
     STYLE_LINE_COLOR,
     /** Line width */
@@ -167,6 +169,14 @@ union GradientColor {
         ColorType colorBegin;
         ColorType colorEnd;
         uint32_t position;
+    };
+    struct {
+        uint16_t startX;
+        uint16_t startY;
+        uint16_t endX;
+        uint16_t endY;
+        ColorType letterColors[RADIAL_GRADIENT_COLOR_NUM];
+        float letterOffsets[RADIAL_GRADIENT_COLOR_NUM];
     };
     struct {
         uint8_t num;
@@ -239,6 +249,7 @@ public:
           bgGradientColor_(other.bgGradientColor_),
           enableGradient_(other.enableGradient_),
           enableRadialGradient_(other.enableRadialGradient_),
+          enableLetterGradient_(other.enableLetterGradient_),
           bgOpa_(other.bgOpa_),
           gradientInfo_(nullptr), /* never alias the source's payload */
           borderOpa_(other.borderOpa_),
@@ -289,6 +300,7 @@ public:
         bgGradientColor_ = other.bgGradientColor_;
         enableGradient_ = other.enableGradient_;
         enableRadialGradient_ = other.enableRadialGradient_;
+        enableLetterGradient_ = other.enableLetterGradient_;
         bgOpa_ = other.bgOpa_;
         borderOpa_ = other.borderOpa_;
         borderWidth_ = other.borderWidth_;
@@ -371,17 +383,18 @@ public:
         delete gradientInfo_;
         gradientInfo_ = info;
     }
+	
+    GradientInfo* gradientInfo_;
 #endif // GRAPHIC_ENABLE_COMPONENT_GRADIENT_FLAG
 
     /* background style */
     ColorType bgColor_;
-    GradientColor bgGradientColor_;
-    uint8_t enableGradient_;
-    uint8_t enableRadialGradient_;
+    GradientColor gradientColor_;
+    bool enableGradient_ : 1;
+    bool enableRadialGradient_ : 1;
+    bool enableLetterGradient_ : 1;
     uint8_t bgOpa_;
-#if (GRAPHIC_ENABLE_COMPONENT_GRADIENT_FLAG == 1)
-    GradientInfo* gradientInfo_;
-#endif
+
     /* border style */
     uint8_t borderOpa_;
     int16_t borderWidth_;
