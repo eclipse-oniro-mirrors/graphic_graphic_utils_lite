@@ -74,13 +74,11 @@ hb build graphic_utils_lite
 
 UTILS组件中定义了图形子系统中的公共数据结构，并提供了一层轻薄的操作系统适配层（如锁、线程、文件系统）。
 
--   提供图片缓存显存分配能力：通过 frameworks/mem_custom.cpp 配合 IMG_CACHE_MEMORY_CUSTOM 宏与 ImageInfo 的 phyAddr 字段，图片缓存由 Gralloc（HBM_USE_ASSIGN_SIZE | HBM_USE_MEM_MMZ）分配，并回填物理地址与虚拟地址供硬件搬运使用。
--   提供 ARM64 NEON 内存拷贝实现：在 graphic_neon_utils.h 中提供 __aarch64__ 分支，使用 LD1/ST1 与 PRFM 预取指令实现 NEON 拷贝。
--   提供配置宏与特性开关：graphic_config.h 中提供 CACHE_JPEG_AND_PNG 宏，bundle.json 中提供 graphic_utils_lite_enable_drm_display_hal 特性开关。
--   硬件图形引擎使能配置：ENABLE_GFX_ENGINES 按 MEDIA_INTERFACE_V1_0 决定，定义该宏时为 1，否则为 0。
--   编译构建配置：支持透传 board_macro_defines；按 media_interface_upgrade 引入 frameworks/mem_custom.cpp 并定义 IMG_CACHE_MEMORY_CUSTOM；graphic_hals 包含 gralloc 源文件并依赖 //third_party/bounds_checking_function:libsec_shared，graphic_utils_lite 依赖 :graphic_hals；包含 //drivers/peripheral/base 等头文件路径及 interfaces/kits。
--   图片缓存接口实现：frameworks/mem_api.cpp 仅在未定义 IMG_CACHE_MEMORY_CUSTOM 时提供 ImageCacheMalloc/ImageCacheFree，避免与自定义实现重复定义。
--   开源合规配置：OAT.xml 通过 projectPolicy 登记 HiSilicon 版权声明。
+-   提供图片缓存显存分配能力：图片缓存由 Gralloc 分配，并回填物理地址与虚拟地址供硬件搬运使用。
+-   提供 ARM64 NEON 内存拷贝实现：使用 LD1/ST1 与 PRFM 预取指令实现 NEON 拷贝。
+-   提供配置宏与特性开关：提供 CACHE_JPEG_AND_PNG 宏与 graphic_utils_lite_enable_drm_display_hal 特性开关。
+-   硬件图形引擎使能配置：ENABLE_GFX_ENGINES 按 MEDIA_INTERFACE_V1_0 决定。
+-   编译构建与开源合规配置：支持透传 board_macro_defines 等构建参数，并通过 projectPolicy 登记 HiSilicon 版权声明。
 
 **图 1**  图形子系统组件间依赖关系<a name="fig717664212591"></a>  
 ![](figures/图形子系统组件间依赖关系.png "图形子系统组件间依赖关系")
