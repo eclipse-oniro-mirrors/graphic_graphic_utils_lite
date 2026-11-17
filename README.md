@@ -12,6 +12,16 @@
 
 The Utils module defines the common data structure in the graphics subsystem and provides a lite OS adaptation layer, which includes the lock, thread, and file system.
 
+This repository is adapted for the HiSpark AiFly (Hi3403V100) development board. Its main capabilities include:
+
+-   Custom image-cache memory allocation: through `frameworks/mem_custom.cpp` together with the `IMG_CACHE_MEMORY_CUSTOM` macro and the `phyAddr` field of `ImageInfo`, the image cache is allocated through Gralloc (`HBM_USE_ASSIGN_SIZE | HBM_USE_MEM_MMZ`) and the physical/virtual addresses are written back for hardware copying.
+-   ARM64 NEON memory-copy implementation: an `__aarch64__` branch in `graphic_neon_utils.h` implements the NEON copy with LD1/ST1 and PRFM prefetch instructions.
+-   Configuration macros and feature switch: the `CACHE_JPEG_AND_PNG` macro in `graphic_config.h` and the `graphic_utils_lite_enable_drm_display_hal` feature in `bundle.json`.
+-   Hardware graphics engine enablement: `ENABLE_GFX_ENGINES` is determined by `MEDIA_INTERFACE_V1_0` (1 when the macro is defined, 0 otherwise).
+-   Build configuration: `board_macro_defines` is forwarded; under `media_interface_upgrade`, `frameworks/mem_custom.cpp` is included and `IMG_CACHE_MEMORY_CUSTOM` is defined; `graphic_hals` contains the gralloc source and depends on `//third_party/bounds_checking_function:libsec_shared`, while `graphic_utils_lite` depends on `:graphic_hals`; `//drivers/peripheral/base` and other include paths as well as `interfaces/kits` are included.
+-   Image-cache API implementation: `frameworks/mem_api.cpp` provides `ImageCacheMalloc`/`ImageCacheFree` only when `IMG_CACHE_MEMORY_CUSTOM` is not defined, avoiding a duplicate definition with the custom implementation.
+-   Open-source compliance configuration: `OAT.xml` registers the HiSilicon copyright through `projectPolicy`.
+
 **Figure  1**  Dependency between modules of the graphics subsystem<a name="fig717664212591"></a>  
 ![](figures/dependency-between-modules-of-the-graphics-subsystem.png "dependency-between-modules-of-the-graphics-subsystem")
 
@@ -75,14 +85,7 @@ The Hals module adapts and encapsulates the functions related to the driver subs
 This repository is adapted for the HiSpark AiFly (Hi3403V100) development board. Its main capabilities include:
 
 -   Gralloc memory allocation engine: provides `Init()`, `AllocBuffer()` and `FreeBuffer()` as a singleton; memory is allocated and freed via BufferHandle, with a virtual-address-to-handle map maintained internally.
--   Custom image-cache memory allocation: through `frameworks/mem_custom.cpp` together with the `IMG_CACHE_MEMORY_CUSTOM` macro and the `phyAddr` field of `ImageInfo`, the image cache is allocated through Gralloc (`HBM_USE_ASSIGN_SIZE | HBM_USE_MEM_MMZ`) and the physical/virtual addresses are written back for hardware copying.
 -   Hardware composition API with options: `GfxEngines::GfxBlitWithOpt()` supports pixel alpha, SRCOVER blending, scaling and global alpha, with a fallback to software composition on failure.
--   ARM64 NEON memory-copy implementation: an `__aarch64__` branch in `graphic_neon_utils.h` implements the NEON copy with LD1/ST1 and PRFM prefetch instructions.
--   Configuration macros and feature switch: the `CACHE_JPEG_AND_PNG` macro in `graphic_config.h` and the `graphic_utils_lite_enable_drm_display_hal` feature in `bundle.json`.
--   Hardware graphics engine enablement: `ENABLE_GFX_ENGINES` is determined by `MEDIA_INTERFACE_V1_0` (1 when the macro is defined, 0 otherwise).
--   Build configuration: `board_macro_defines` is forwarded; under `media_interface_upgrade`, `frameworks/mem_custom.cpp` is included and `IMG_CACHE_MEMORY_CUSTOM` is defined; `graphic_hals` contains the gralloc source and depends on `//third_party/bounds_checking_function:libsec_shared`, while `graphic_utils_lite` depends on `:graphic_hals`; `//drivers/peripheral/base` and other include paths as well as `interfaces/kits` are included.
--   Image-cache API implementation: `frameworks/mem_api.cpp` provides `ImageCacheMalloc`/`ImageCacheFree` only when `IMG_CACHE_MEMORY_CUSTOM` is not defined, avoiding a duplicate definition with the custom implementation.
--   Open-source compliance configuration: `OAT.xml` registers the HiSilicon copyright through `projectPolicy`.
 
 **Figure  1**  Dependency between modules of the graphics subsystem and that between graphics modules and the driver subsystem<a name="fig717664212591"></a>  
 ![](figures/dependency-between-modules-of-the-graphics-subsystem-and-that-between-graphics-modules-and-the-drive.png "dependency-between-modules-of-the-graphics-subsystem-and-that-between-graphics-modules-and-the-drive")
