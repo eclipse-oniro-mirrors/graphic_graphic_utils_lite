@@ -12,8 +12,6 @@
 
 HALS组件中实现了对驱动子系统和平台相关功能的适配封装，包括了FrameBuffer/GFX/SIMD等。
 
-本仓针对 HiSpark AiFly（Hi3403V100）开发板完成功能适配，主要能力包括：
-
 -   提供 Gralloc 显存分配引擎：以单例方式提供 `Init()`、`AllocBuffer()`、`FreeBuffer()`，基于 BufferHandle 完成显存分配与释放，并维护虚拟地址到句柄的映射。
 -   提供硬件合成带选项接口：`GfxEngines::GfxBlitWithOpt()` 支持像素 Alpha、SRCOVER 混合、缩放与全局透明度，失败时回退软合成。
 
@@ -75,8 +73,6 @@ hb build graphic_utils_lite
 ## 简介<a name="section11660541593"></a>
 
 UTILS组件中定义了图形子系统中的公共数据结构，并提供了一层轻薄的操作系统适配层（如锁、线程、文件系统）。
-
-本仓针对 HiSpark AiFly（Hi3403V100）开发板完成功能适配，主要能力包括：
 
 -   提供图片缓存显存分配能力：通过 `frameworks/mem_custom.cpp` 配合 `IMG_CACHE_MEMORY_CUSTOM` 宏与 `ImageInfo` 的 `phyAddr` 字段，图片缓存由 Gralloc（`HBM_USE_ASSIGN_SIZE | HBM_USE_MEM_MMZ`）分配，并回填物理地址与虚拟地址供硬件搬运使用。
 -   提供 ARM64 NEON 内存拷贝实现：在 `graphic_neon_utils.h` 中提供 `__aarch64__` 分支，使用 LD1/ST1 与 PRFM 预取指令实现 NEON 拷贝。
