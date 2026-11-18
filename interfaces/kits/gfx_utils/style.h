@@ -171,10 +171,10 @@ union GradientColor {
         uint32_t position;
     };
     struct {
-        uint16_t startX;
-        uint16_t startY;
-        uint16_t endX;
-        uint16_t endY;
+        int16_t startX;
+        int16_t startY;
+        int16_t endX;
+        int16_t endY;
         ColorType letterColors[RADIAL_GRADIENT_COLOR_NUM];
         float letterOffsets[RADIAL_GRADIENT_COLOR_NUM];
     };
