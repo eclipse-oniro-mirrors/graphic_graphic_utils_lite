@@ -37,8 +37,9 @@ Style StyleDefault::scrollBarForegroundStyle_;
 
 Style::Style()
     : bgColor_(Color::Black()),
-      enableGradient_(0),
-      enableRadialGradient_(0),
+      enableGradient_(false),
+      enableRadialGradient_(false),
+      enableLetterGradient_(false),
       bgOpa_(OPA_OPAQUE),
 #if (GRAPHIC_ENABLE_COMPONENT_GRADIENT_FLAG == 1)
       gradientInfo_(nullptr),
@@ -136,7 +137,7 @@ void Style::SetStyle(uint8_t key, int64_t value)
     switch (key) {
         case STYLE_BACKGROUND_COLOR:
             bgColor_.full = value;
-            enableGradient_ = 0;
+            enableGradient_ = false;
             break;
         case STYLE_BACKGROUND_OPA:
             bgOpa_ = value;
@@ -182,6 +183,7 @@ void Style::SetStyle(uint8_t key, int64_t value)
             break;
         case STYLE_TEXT_COLOR:
             textColor_.full = value;
+            enableLetterGradient_ = false;
             break;
         case STYLE_TEXT_FONT:
             font_ = value;
@@ -230,13 +232,16 @@ void Style::SetStyle(uint8_t key, GradientColor &gradientColor)
 {
     switch (key) {
         case STYLE_GRADIENT_BACKGROUND_COLOR:
-            bgGradientColor_ = gradientColor;
-            enableGradient_ = 1;
+            gradientColor_  = gradientColor;
+            enableGradient_ = true;
             break;
         case STYLE_RADIAL_GRADIENT_BACKGROUND_COLOR:
-            bgGradientColor_ = gradientColor;
-            enableRadialGradient_ = 1;
+            gradientColor_  = gradientColor;
+            enableRadialGradient_ = true;
             break;
+        case STYLE_TEXT_GRADIENT_COLOR:
+            gradientColor_ = gradientColor;
+            enableLetterGradient_ = true;
         default:
             break;
     }
